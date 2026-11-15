@@ -1,1 +1,186 @@
-cc
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Y Jorkie Mende Teaching - Learn Mende</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#FFF8E1;color:#222;transition:.3s}
+body.dark{background:#111;color:#eee}
+body.dark .card{background:#222;color:#eee}
+header{background:#0B6E4F;color:white;padding:20px;text-align:center;position:relative}
+header h1{font-size:24px;line-height:1.2}
+header p{font-size:13px;opacity:.9;margin-top:6px}
+.badge{background:#FFB300;color:#000;display:inline-block;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:8px}
+.settings-btn{position:absolute;top:12px;right:12px;background:white;color:#0B6E4F;border:none;padding:8px 12px;border-radius:20px;font-weight:bold;cursor:pointer}
+.top{padding:15px;text-align:center}
+.top button{padding:12px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer}
+.premium-btn{background:#FFB300;color:#000}
+.card{background:white;margin:12px;border-radius:15px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.mende{font-size:22px;font-weight:bold;color:#0B6E4F}
+body.dark .mende{color:#7CFFB2}
+.krio{font-size:15px;margin-top:6px}
+.eng{font-size:14px;color:#777;margin-top:2px}
+body.dark .eng{color:#bbb}
+.play{margin-top:10px;background:#0B6E4F;color:white;border:none;padding:9px 16px;border-radius:20px;cursor:pointer}
+.locked{opacity:.6;position:relative}
+.locked:after{content:"🔒 PREMIUM";position:absolute;top:10px;right:12px;background:#FFB300;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold;color:#000}
+.pay-box{background:#111;color:white;padding:20px;border-radius:15px;margin:15px}
+.pay-box input{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:none}
+.pay-box button{width:100%;padding:13px;background:#25D366;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:6px}
+.status{text-align:center;padding:10px;font-weight:bold}
+#settingsPanel{display:none;background:white;color:#222;margin:12px;padding:16px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+body.dark #settingsPanel{background:#222;color:#eee}
+#settingsPanel label{display:block;margin:12px 0 5px;font-weight:bold}
+#settingsPanel input[type=range]{width:100%}
+#settingsPanel select{width:100%;padding:10px;border-radius:10px}
+.comment-box{background:white;margin:15px;padding:16px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+body.dark .comment-box{background:#222}
+.comment-box input,.comment-box textarea{width:100%;padding:11px;margin:6px 0;border-radius:10px;border:1px solid #ddd}
+.comment{border-bottom:1px solid #eee;padding:10px 0}
+body.dark .comment{border-color:#444}
+.comment b{color:#0B6E4F}
+footer{text-align:center;padding:20px;font-size:12px;color:#888}
+</style>
+</head>
+<body>
+
+<header>
+<button class="settings-btn" onclick="toggleSettings()">⚙️ Settings</button>
+<h1>🇸🇱 Y JORKIE<br>Mende Teaching</h1>
+<p>Learn Mende → Krio → English | Voice + Translation</p>
+<div class="badge">⭐ By Y Jorkie • Sierra Leone</div>
+</header>
+
+<div id="settingsPanel">
+<h3>⚙️ Settings</h3>
+<label>🌞 Brightness</label>
+<input type="range" id="brightness" min="50" max="120" value="100" oninput="changeBrightness(this.value)">
+<label>🌙 Mode</label>
+<select onchange="changeMode(this.value)">
+<option value="light">☀️ Light Mode</option>
+<option value="dark">🌙 Dark Mode</option>
+</select>
+<label>🔊 Sound Volume</label>
+<input type="range" id="volume" min="0" max="100" value="80" oninput="changeVolume(this.value)">
+<span id="volLabel">80%</span>
+<label>🔤 Text Size</label>
+<select onchange="changeFont(this.value)">
+<option value="normal">Normal</option>
+<option value="big">Big - For Old People</option>
+<option value="small">Small</option>
+</select>
+<label>🌍 Language Display</label>
+<select>
+<option>Show All - Mende + Krio + English</option>
+<option>Only Mende + Krio</option>
+<option>Only Mende + English</option>
+</select>
+<button onclick="toggleSettings()" style="width:100%;padding:10px;background:#0B6E4F;color:white;border:none;border-radius:10px;margin-top:10px">Close Settings</button>
+</div>
+
+<div class="top">
+<button class="premium-btn" onclick="document.getElementById('pay').scrollIntoView()">⭐ Go Premium - Le 50 / Month</button>
+</div>
+
+<div id="status" class="status"></div>
+<div id="lessons"></div>
+
+<div id="pay" class="pay-box">
+<h2>⭐ Go Premium - Y Jorkie</h2>
+<p style="margin:10px 0;line-height:1.6">Unlock ALL Lessons + Voice<br><br>
+<b>Step 1:</b> Send <b>Le 50</b> to Orange Money:<br>
+<span style="font-size:26px;color:#FFB300;font-weight:bold">078241571</span><br>
+<span style="font-size:13px">Name: Y Jorkie</span><br><br>
+<b>Step 2:</b> Put your number + Transaction ID:</p>
+<input id="phone" placeholder="Your Phone Number e.g 078241571">
+<input id="txid" placeholder="Orange Money Transaction ID e.g PP123...">
+<button onclick="submitPay()">I DON PAY - SEND TO Y JORKIE</button>
+<p style="font-size:12px;margin-top:10px;opacity:.7">Teacher go confirm and send you Unlock Code: <b>MENDE2026</b></p>
+<input id="code" placeholder="Enter Unlock Code from Y Jorkie">
+<button onclick="unlockWithCode()" style="background:#FFB300;color:black">UNLOCK WITH CODE</button>
+</div>
+
+<div class="comment-box">
+<h3>💬 What People Say - Comment Here</h3>
+<p style="font-size:13px;color:#777">Tell Y Jorkie wetin you learn, or ask question about Mende</p>
+<input id="cName" placeholder="Your Name">
+<textarea id="cText" placeholder="Write your comment... e.g I love Lesson 1!"></textarea>
+<button onclick="addComment()" style="width:100%;padding:12px;background:#0B6E4F;color:white;border:none;border-radius:10px;font-weight:bold">Post Comment</button>
+<div id="comments"></div>
+</div>
+
+<footer>Y Jorkie Mende Teaching • Made in Sierra Leone 🇸🇱 • WhatsApp: 078241571</footer>
+
+<script>
+const lessons=[
+{m:"Mbo",k:"Aw di bodi? / Kushe",e:"Hello"},
+{m:"Bi yei?",k:"Aw yu de?",e:"How are you?"},
+{m:"Mia lo",k:"A de",e:"I am fine"},
+{m:"Bi lo ... ?",k:"Wetin na yu nem?",e:"What is your name?"},
+{m:"Nya bi lo ...",k:"Mi nem na ...",e:"My name is ..."},
+{m:"Bia",k:"Kam",e:"Come"},
+{m:"Lo",k:"Go",e:"Go"},
+{m:"Yia",k:"Wata",e:"Water"},
+{m:"Ndu",k:"Rais / It",e:"Rice / Food"},
+{m:"Gbaa",k:"Moni",e:"Money"},
+{m:"Kpaa",k:"Wok",e:"Work"},
+{m:"Hale",k:"Os / House",e:"House"},
+{m:"Nde",k:"Mama / Mami",e:"Mother"},
+{m:"Kekeh",k:"Papa / Dadi",e:"Father"},
+{m:"Ndokpei",k:"Pikin",e:"Child"},
+{m:"Tewaa",k:"Tenki",e:"Thank you"},
+{m:"Kaka",k:"Sori",e:"Sorry"},
+{m:"Bi va?",k:"Usai yu de go?",e:"Where are you going?"},
+{m:"Mia lo va ...",k:"A de go ...",e:"I am going to ..."},
+{m:"Hindee lo?",k:"Aw yu slip?",e:"Did you sleep well?"},
+];
+
+let volume=0.8;
+function render(){
+  const isPremium = localStorage.getItem('mende_premium') && new Date(localStorage.getItem('mende_expiry')) > new Date();
+  document.getElementById('status').innerHTML = isPremium ? "✅ PREMIUM ACTIVE until " + localStorage.getItem('mende_expiry').slice(0,10) + " - Y Jorkie" : "🆓 FREE MODE - 5 Lessons Open • Y Jorkie";
+  let html="";
+  lessons.forEach((l,i)=>{
+    const locked=i>=5 && !isPremium;
+    html+=`<div class="card ${locked?'locked':''}"><div style="font-size:12px">LESSON ${i+1} • Y JORKIE</div><div class="mende">${locked?"🔒 Locked - Pay Le 50":l.m}</div><div class="krio">${locked?"Pay to unlock": "Krio: "+l.k}</div><div class="eng">${locked?"":"English: "+l.e}</div>${!locked?`<button class="play" onclick="speak('${l.m}')">▶ Play Voice</button>`: ""}</div>`;
+  });
+  document.getElementById('lessons').innerHTML=html;
+  renderComments();
+}
+function toggleSettings(){const p=document.getElementById('settingsPanel');p.style.display=p.style.display==='block'?'none':'block';}
+function changeBrightness(v){document.body.style.filter=`brightness(${v}%)`;}
+function changeMode(v){document.body.classList.toggle('dark',v==='dark');}
+function changeVolume(v){volume=v/100;document.getElementById('volLabel').innerText=v+'%';}
+function changeFont(v){document.body.style.fontSize=v==='big'?'19px':v==='small'?'13px':'16px';}
+function speak(text){
+  const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.volume=volume;speechSynthesis.speak(u);
+}
+function submitPay(){
+  const phone=document.getElementById('phone').value;const tx=document.getElementById('txid').value;
+  if(!phone||!tx){alert("Put phone + Transaction ID");return;}
+  alert("Thank you! Y Jorkie go check am.");
+  window.open("https://wa.me/23278241571?text=Hello Y Jorkie, I don pay for Mende Premium. My number: "+phone+" TxID: "+tx);
+}
+function unlockWithCode(){
+  const c=document.getElementById('code').value;
+  if(c==="MENDE2026"){const exp=new Date();exp.setDate(exp.getDate()+30);localStorage.setItem('mende_premium','yes');localStorage.setItem('mende_expiry',exp.toISOString());alert("Premium Unlocked for 30 days!");render();}
+  else{alert("Wrong code. Ask Y Jorkie on WhatsApp 078241571");}
+}
+function addComment(){
+  const n=document.getElementById('cName').value||"Student";const t=document.getElementById('cText').value;
+  if(!t){alert("Write comment first");return;}
+  let arr=JSON.parse(localStorage.getItem('mende_comments')||"[]");
+  arr.unshift({n,t,date:new Date().toLocaleDateString()});localStorage.setItem('mende_comments',JSON.stringify(arr));
+  document.getElementById('cText').value="";renderComments();
+}
+function renderComments(){
+  let arr=JSON.parse(localStorage.getItem('mende_comments')||"[]");
+  if(arr.length===0){arr=[{n:"Y Jorkie",t:"Welcome to my Mende class! Comment here if you love Mende ❤️",date:"Today"},{n:"Aminata",t:"Lesson 1 don easy, I don sabi say Mbo na Hello!",date:"Today"}];}
+  document.getElementById('comments').innerHTML=arr.map(c=>`<div class="comment"><b>${c.n}</b> <span style="font-size:11px;color:#888">${c.date}</span><div>${c.t}</div></div>`).join("");
+}
+render();
+</script>
+</body>
+  </html>
